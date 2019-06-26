@@ -107,3 +107,21 @@ fi
 # Magnum examples (for Debug)
 git clone https://github.com/mosra/magnum-examples.git
 
+
+############### MP_FLUID ################
+# Synch
+git clone https://gitlab.lrz.de/sariug/synch_fixed.git
+# VRPN - taken from prepare home directory
+git clone https://github.com/vrpn/vrpn.git
+
+
+
+
+# Download mpfluid
+if [ -d "mpfluid_vis_sari" ]; then
+    echo "mpfluid_vis_sari exist"
+else 
+    git clone https://gitlab.lrz.de/gu62loh/mpfluid_vis_sari.git
+    cd mpfluid_vis_sari
+    git checkout CAVE_1 
+fi
