@@ -1,4 +1,9 @@
 #!/bin/bash
+
+#   sariug
+#   Current Update : 26.06.2019
+#
+
 GLFW3=3.2
 GLM=0.9.7.0
 OPENMPI=openmpi-2.1.0
@@ -9,16 +14,36 @@ mkdir source
 cd source
 
 # Download Corrade
+if [ -d "corrade" ]; then
+    echo "Corrade exist"
+else
 git clone https://github.com/mosra/corrade.git
+cd corrade
+git checkout 150d3972d6047ddfd4685a76b45195a23d57efea
+cd ..
+fi
 
 # Download Magnum
+if [ -d "magnum" ]; then
+    echo "magnum exist"
+else
 git clone https://github.com/mosra/magnum.git
+cd magnum
+git checkout d557563a838837595cb8208eb9398e9ebbee7baa
+cd ..
+fi
 
 # Download Magnum Integration
+if [ -d "magnum-integration" ]; then
+    echo "magnum exist"
+else
 git clone https://github.com/mosra/magnum-integration.git
-
+cd magnum-integration
+git checkout 2cde27dbf3f00ac829d77a2e7ff094e3cf76b904
+cd ..
+fi
 # Download Magnum Plugins
-git clone https://github.com/mosra/magnum-plugins.git
+# git clone https://github.com/mosra/magnum-plugins.git
 
 # Download glfw3
 if [ -d "glfw-$GLFW3" ]; then
@@ -39,8 +64,14 @@ else
 fi
 
 # Download imgui
-git clone https://github.com/ocornut/imgui.git
-
+if [ -d "imgui" ]; then
+    echo "GLM $GLM exist"
+else
+    git clone https://github.com/ocornut/imgui.git
+    cd imgui
+    git checkout b8fe0df7df79dcf7560246f9c3510f5e54de6ff6
+    cd ..
+fi
 # Download Openmpi
 if [ -d "$OPENMPI" ]; then
     echo "$OPENMPI exist"

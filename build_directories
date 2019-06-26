@@ -1,47 +1,98 @@
 #!/bin/bash
 
+#   sariug
+#   Current Update : 26.06.2019
+#
+
+
 GLFW3=3.2
 GLM=0.9.7.0
 OPENMPI=openmpi-2.1.0
 VTK=VTK-8.2.0
-
+INSTALL_FOLDER="$PWD/install"
+SOURCE_FOLDER="$PWD/source"
 # With the order of dependency
 
 # glm
 cd source/glm*
 mkdir build
 cd build
-cmake .. -DCMAKE_INSTALL_PREFIX="../../../install"
+cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
 make install
 
 # glwf
 cd ../../glfw-$GLFW3
 mkdir build
 cd build
-cmake .. -DCMAKE_INSTALL_PREFIX="../../../install"
+cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
 make install
 
-# openmpi
-cd ../../$OPENMPI
-./configure --prefix="$PWD/install"
-make all install 
+# # openmpi
+# cd ../../$OPENMPI
+# ./configure --prefix="$INSTALL_FOLDER"
+# make all install 
 
-# vtk
-cd ../vtk
-mkdir build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX="../../../install"
-make install
+# # vtk
+# cd ../vtk
+# mkdir build
+# cd build
+# cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
+# make install
 
 # corrade
 cd ../../corrade
 mkdir build
-cmake .. -DCMAKE_INSTALL_PREFIX="../../../install" -DCMAKE DOLDUR BURAYIIIIII
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
+    -DWITH_INTERCONNECT=ON \
+    -DWITH_PLUGINMANAGER=ON \
+    -DWITH_TESTSUITE=ON
+make install
 
+echo -e "\e[41mMAGNUM IS BUILDING\e[0m"
 # magnum
+cd ../../magnum
+mkdir build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
+    -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
+    -DCORRADE_INCLUDE_DIR="$INSTALL_FOLDER/include"\
+    -DWITH_GLFWAPPLICATION=ON \
+    -DWITH_SDL2APPLICATION=ON
+make install
+echo -e "\e[46mMAGNUM IS FINISHED\e[0m"
 
+
+echo -e "\e[41mMAGNUM INTEGRATION IS BUILDING\e[0m"
 # magnum integration
+cd ../../magnum-integration
+mkdir build 
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
+    -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
+    -D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
+    -DIMGUI_DIR="$SOURCE_FOLDER/imgui" \
+    -DWITH_IMGUI=ON 
+make install
+echo -e "\e[46mMAGNUM INTEGRATION IS FINISHED\e[0m"
 
+# magnum examples ( Debug )
+cd ../../magnum-examples
+mkdir build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
+    -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
+    -D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
+    -DIMGUI_DIR="$SOURCE_FOLDER/imgui" \
+    -DWITH_IMGUI_EXAMPLE=ON\
+    -DWITH_TRIANGLE_EXAMPLE=OFF
+    
+make install
 
+    echo "$INSTALL_FOLDER" 
 
 
