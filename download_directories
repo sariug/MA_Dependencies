@@ -12,6 +12,16 @@ VTK=VTK-8.2.0
 mkdir source
 # Get to Source directory
 cd source
+# Check for SDL2 ( is used mostly for debugging and ensuring magnum works good)
+if ldconfig -p | grep libsdl2; then
+echo "SDL2 found"
+else
+echo "SDL2 not found, installing"
+    wget 'https://www.libsdl.org/release/SDL2-2.0.9.tar.gz'
+    tar -xvf 'SDL2-2.0.9.tar.gz'
+    rm $'SDL2-2.0.9.tar.gz'
+fi
+
 
 # Download Corrade
 if [ -d "corrade" ]; then
@@ -51,7 +61,7 @@ if [ -d "glfw-$GLFW3" ]; then
 else 
     wget 'https://github.com/glfw/glfw/archive/3.2.zip'
     unzip $GLFW3
-    rm $GLFW3
+    rm $GLFW3*
 fi
 
 # Download glm
@@ -60,7 +70,7 @@ if [ -d "glm-$GLM" ]; then
 else 
     wget 'https://github.com/g-truc/glm/archive/0.9.7.0.zip'
     unzip $GLM
-    rm $GLM
+    rm $GLM*
 fi
 
 # Download imgui
