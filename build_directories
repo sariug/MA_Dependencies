@@ -12,10 +12,10 @@ VTK=VTK-8.2.0
 
 CWD="$PWD"
 INSTALL_FOLDER="$PWD/install"
-SOURCE_FOLDER="$PWD/source"
+DEPENDENCY_FOLDER="$PWD/dependencies"
 # With the order of dependency
-#if [ -d "$source/SDL2*" ]; then
-    cd source/SDL2*
+#if [ -d "$DEPENDENCY_FOLDER/SDL2*" ]; then
+    cd dependencies/SDL2*
     mkdir build
     cd build
     cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
@@ -24,7 +24,7 @@ SOURCE_FOLDER="$PWD/source"
     echo -e "\e[46mSDL2 IS FINISHED\e[0m"
     cd ../../glm*
    # else 
- #   cd source/glm*
+ #   cd dependencies/glm*
 #fi
 
 echo -e "\e[41mGLM IS BUILDING\e[0m"
@@ -93,7 +93,7 @@ cmake .. \
     -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
     -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
     -D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
-    -DIMGUI_DIR="$SOURCE_FOLDER/imgui" \
+    -DIMGUI_DIR="$DEPENDENCY_FOLDER/imgui" \
     -DWITH_IMGUI=ON 
 make install
 echo -e "\e[46mMAGNUM INTEGRATION IS FINISHED\e[0m"
@@ -106,7 +106,7 @@ cmake .. \
     -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
     -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
     -D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
-    -DIMGUI_DIR="$SOURCE_FOLDER/imgui" \
+    -DIMGUI_DIR="$DEPENDENCY_FOLDER/imgui" \
     -DWITH_IMGUI_EXAMPLE=ON\
     -DWITH_TRIANGLE_EXAMPLE=OFF
     
@@ -116,7 +116,6 @@ make install
 
 # Make VRPN
 cd ../../vrpn
-cd source/vrpn
 mkdir build
 cd build 
 cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_FOLDER .. 
@@ -140,13 +139,11 @@ echo -e "\e[46msynch IS FINISHED\e[0m"
 
 
 echo -e "\e[41mmpfluid_vis_sari INTEGRATION IS BUILDING\e[0m"
-# # Make MPfluid
+
+# Make MPfluid
 cd $CWD/mpfluid_vis_sari
-
-
 mkdir build
 cd build
-
 cmake ../src \
     -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"/mpfluid \
     -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
@@ -160,7 +157,7 @@ cmake ../src \
     -DUSE_VTK=ON\
     -DBUILD_SW_CLIENT=ON\
     -DBUILD_SCENOGRAPH_PROJECT=ON\
-    -DImGui_INCLUDE_DIR="$SOURCE_FOLDER/imgui" 
+    -DImGui_INCLUDE_DIR="$DEPENDENCY_FOLDER/imgui" 
 
 make 
 

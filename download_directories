@@ -9,9 +9,9 @@ GLM=0.9.7.0
 OPENMPI=openmpi-2.1.0
 VTK=VTK-8.2.0
 # Create source code directory
-mkdir source
+mkdir dependencies
 # Get to Source directory
-cd source
+cd dependencies
 # Check for SDL2 ( is used mostly for debugging and ensuring magnum works good)
 #if ldconfig -p | grep libsdl2; then
 #echo "SDL2 found in usr"
