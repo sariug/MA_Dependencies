@@ -3,11 +3,14 @@
 #   sariug
 #   Current Update : 26.06.2019
 #
+source progress_bar.sh
 
 GLFW3=3.2
 GLM=0.9.7.0
 OPENMPI=openmpi-2.1.0
 VTK=VTK-8.2.0
+echo -e "\e[95m$VTK , GLM-$GLM , GLFW3-$GLFW3 and magnum packages as well as mp_fluid and synch is being downloaded."
+setup_scroll_area
 # Create source code directory
 mkdir dependencies
 # Get to Source directory
@@ -18,38 +21,39 @@ cd dependencies
 #else
 #echo "SDL2 not found in usr, installing"
 if [ -d "SDL2-2.0.9" ]; then
-    echo "SDL2 folder exist"
+    echo -e "\e[34mSDL2 folder exist"
 else
     wget 'https://www.libsdl.org/release/SDL2-2.0.9.tar.gz'
+    draw_progress_bar 6
     tar -xvf 'SDL2-2.0.9.tar.gz'
     rm $'SDL2-2.0.9.tar.gz'
 fi
 #fi
-
+draw_progress_bar 9
 
 # Download Corrade
 if [ -d "corrade" ]; then
-    echo "Corrade exist"
+    echo -e "\e[34mCorrade exist"
 else
 git clone https://github.com/mosra/corrade.git
 cd corrade
 git checkout 150d3972d6047ddfd4685a76b45195a23d57efea
 cd ..
 fi
-
+draw_progress_bar 18
 # Download Magnum
 if [ -d "magnum" ]; then
-    echo "magnum exist"
+    echo -e "\e[34mmagnum exist"
 else
 git clone https://github.com/mosra/magnum.git
 cd magnum
 git checkout d557563a838837595cb8208eb9398e9ebbee7baa
 cd ..
 fi
-
+draw_progress_bar 30
 # Download Magnum Integration
 if [ -d "magnum-integration" ]; then
-    echo "magnum exist"
+    echo -e "\e[34mmagnum exist"
 else
 git clone https://github.com/mosra/magnum-integration.git
 cd magnum-integration
@@ -58,70 +62,83 @@ cd ..
 fi
 # Download Magnum Plugins
 # git clone https://github.com/mosra/magnum-plugins.git
-
+draw_progress_bar 40
 # Download glfw3
 if [ -d "glfw-$GLFW3" ]; then
-    echo "GLFW $GLFW3 exist"
+    echo -e "\e[34mGLFW $GLFW3 exist"
 else 
     wget 'https://github.com/glfw/glfw/archive/3.2.zip'
     unzip $GLFW3
     rm $GLFW3*
 fi
-
+draw_progress_bar 50
 # Download glm
 if [ -d "glm-$GLM" ]; then
-    echo "GLM $GLM exist"
+    echo -e "\e[34mGLM $GLM exist"
 else 
     wget 'https://github.com/g-truc/glm/archive/0.9.7.0.zip'
     unzip $GLM
     rm $GLM*
 fi
-
+draw_progress_bar 61
 # Download imgui
 if [ -d "imgui" ]; then
-    echo "GLM $GLM exist"
+    echo "\e[34mimgui exist"
 else
     git clone https://github.com/ocornut/imgui.git
     cd imgui
     git checkout b8fe0df7df79dcf7560246f9c3510f5e54de6ff6
     cd ..
 fi
+draw_progress_bar 70
 # Download Openmpi
-if [ -d "$OPENMPI" ]; then
-    echo "$OPENMPI exist"
-else 
-    wget 'https://download.open-mpi.org/release/open-mpi/v2.1/openmpi-2.1.0.tar.gz'
-    tar -xvf $OPENMPI.tar.gz
-    rm $OPENMPI.tar.gz
-fi
+# if [ -d "$OPENMPI" ]; then
+#     echo "$OPENMPI exist"
+# else 
+#     wget 'https://download.open-mpi.org/release/open-mpi/v2.1/openmpi-2.1.0.tar.gz'
+#     tar -xvf $OPENMPI.tar.gz
+#     rm $OPENMPI.tar.gz
+# fi
 
 # Download vtk
 if [ -d "$VTK" ]; then
-    echo "$VTK exist"
+    echo -e "\e[34m$VTK exist"
 else 
     wget 'https://www.vtk.org/files/release/8.2/VTK-8.2.0.zip'
     unzip $VTK.zip
     rm $VTK.zip
 fi
-
+draw_progress_bar 80
 # Magnum examples (for Debug)
-git clone https://github.com/mosra/magnum-examples.git
-
+if [ -d "magnum-examples" ]; then
+    echo -e "\e[34mmagnum-examples exist"
+else
+    git clone https://github.com/mosra/magnum-examples.git
+fi
 
 ############### MP_FLUID ################
 # Synch
-git clone https://gitlab.lrz.de/sariug/synch_fixed.git
+if [ -d "synch_fixed" ]; then
+    echo "\e[34msynch_fixed exist"
+else
+    git clone https://gitlab.lrz.de/sariug/synch_fixed.git
+fi
 # VRPN - taken from prepare home directory
-git clone https://github.com/vrpn/vrpn.git
+if [ -d "vrpn" ]; then
+    echo -e "\e[34mVRPN exist"
+else
+    git clone https://github.com/vrpn/vrpn.git
+fi
 
-
+draw_progress_bar 90
 cd ..
 
 # Download mpfluid
 if [ -d "mpfluid_vis_sari" ]; then
-    echo "mpfluid_vis_sari exist"
+    echo -e "\e[34mmpfluid_vis_sari exist"
 else 
     git clone https://gitlab.lrz.de/gu62loh/mpfluid_vis_sari.git
     cd mpfluid_vis_sari
     git checkout CAVE_1 
 fi
+destroy_scroll_area
