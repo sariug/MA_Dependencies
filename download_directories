@@ -83,7 +83,7 @@ fi
 draw_progress_bar 61
 # Download imgui
 if [ -d "imgui" ]; then
-    echo "\e[34mimgui exist"
+    echo -e "\e[34mimgui exist"
 else
     git clone https://github.com/ocornut/imgui.git
     cd imgui
@@ -119,7 +119,7 @@ fi
 ############### MP_FLUID ################
 # Synch
 if [ -d "synch_fixed" ]; then
-    echo "\e[34msynch_fixed exist"
+    echo -e "\e[34msynch_fixed exist"
 else
     git clone https://gitlab.lrz.de/sariug/synch_fixed.git
 fi
