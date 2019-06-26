@@ -12,6 +12,7 @@ VTK=VTK-8.2.0
 INSTALL_FOLDER="$PWD/install"
 SOURCE_FOLDER="$PWD/source"
 # With the order of dependency
+# todo. Set SDL2 up 
 
 # glm
 cd source/glm*
@@ -40,6 +41,7 @@ make install
 # make install
 
 # corrade
+echo -e "\e[41mCorrade IS BUILDING\e[0m"
 cd ../../corrade
 mkdir build
 cd build
@@ -49,7 +51,7 @@ cmake .. \
     -DWITH_PLUGINMANAGER=ON \
     -DWITH_TESTSUITE=ON
 make install
-
+echo -e "\e[46mCorrade IS FINISHED\e[0m"
 echo -e "\e[41mMAGNUM IS BUILDING\e[0m"
 # magnum
 cd ../../magnum
