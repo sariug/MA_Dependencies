@@ -9,23 +9,33 @@ GLFW3=3.2
 GLM=0.9.7.0
 OPENMPI=openmpi-2.1.0
 VTK=VTK-8.2.0
+
+CWD="$PWD"
 INSTALL_FOLDER="$PWD/install"
 SOURCE_FOLDER="$PWD/source"
 # With the order of dependency
-cd source/SDL2*
-mkdir build
-cd build
-cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
-make -j
-make install
+#if [ -d "$source/SDL2*" ]; then
+    cd source/SDL2*
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
+    make -j
+    make install
+    echo -e "\e[46mSDL2 IS FINISHED\e[0m"
+    cd ../../glm*
+   # else 
+ #   cd source/glm*
+#fi
 
+echo -e "\e[41mGLM IS BUILDING\e[0m"
 # glm
 cd ../../glm*
 mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
 make install
-
+echo -e "\e[46mGLM IS FINISHED\e[0m"
+echo -e "\e[41mGLFW IS BUILDING\e[0m"
 # glwf
 cd ../../glfw-$GLFW3
 mkdir build
@@ -37,13 +47,15 @@ make install
 # cd ../../$OPENMPI
 # ./configure --prefix="$INSTALL_FOLDER"
 # make all install 
-
-# # vtk
-# cd ../vtk
-# mkdir build
-# cd build
-# cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
-# make install
+echo -e "\e[46mGLFW IS FINISHED\e[0m"
+echo -e "\e[41mVTK IS BUILDING\e[0m"
+# vtk
+cd ../../$VTK
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
+make -j
+make install
 
 # corrade
 echo -e "\e[41mCorrade IS BUILDING\e[0m"
@@ -110,7 +122,10 @@ cd build
 cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_FOLDER .. 
 make -j
 make install 
+echo -e "\e[46mvrpn IS FINISHED\e[0m"
 
+
+echo -e "\e[41mSynch INTEGRATION IS BUILDING\e[0m"
 # Make Synch
 cd ../../synch_fixed/synch
 mkdir build
@@ -121,29 +136,36 @@ cmake .. \
     -DVRPN_ROOT_DIR="$INSTALL_FOLDER/lib/vrpn"
 
 make install
+echo -e "\e[46msynch IS FINISHED\e[0m"
 
+
+echo -e "\e[41mmpfluid_vis_sari INTEGRATION IS BUILDING\e[0m"
 # # Make MPfluid
-cd ../../../mpfluid_vis_sari
+cd $CWD/mpfluid_vis_sari
 
 
 mkdir build
 cd build
 
 cmake ../src \
-    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"/mpfluid \
     -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
     -DUSE_HDF5=OFF\
     -DBUILD_HDF_CLIENT=OFF\
     -Dsynch_DIR=$INSTALL_FOLDER/"cmake" \
-    -DUSE_SDL2=ON\
-    -DIMGUI_DIR="$SOURCE_FOLDER/imgui" \
-    -DBUILD_SW_CLIENT=OFF
-    #-D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
+    -DUSE_SDL2=OFF\
+    -D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
+    -DBUILD_SW_CLIENT=OFF\
+    -DUSE_SWCOLLECTOR=ON\
+    -DUSE_VTK=ON\
+    -DBUILD_SW_CLIENT=ON\
+    -DBUILD_SCENOGRAPH_PROJECT=ON\
+    -DImGui_INCLUDE_DIR="$SOURCE_FOLDER/imgui" 
 
-    #-DWITH_IMGUI_EXAMPLE=ON\
-    #-DWITH_TRIANGLE_EXAMPLE=OFF
-# make 
+make 
 
-# make install
+make install
+# 
+echo "export LD_LIBRARY_PATH=:$INSTALL_FOLDER/lib:$LD_LIBRARY_PATH">> ~/.bashrc
 
-
+echo -e "\e[44mBuilding libraries finished\e[0m"
