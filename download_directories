@@ -14,12 +14,16 @@ mkdir source
 cd source
 # Check for SDL2 ( is used mostly for debugging and ensuring magnum works good)
 if ldconfig -p | grep libsdl2; then
-echo "SDL2 found"
+echo "SDL2 found in usr"
 else
-echo "SDL2 not found, installing"
+echo "SDL2 not found in usr, installing"
+    if [ -d "SDL2-2.0.9" ]; then
+        echo "SDL2 folder exist"
+    else
     wget 'https://www.libsdl.org/release/SDL2-2.0.9.tar.gz'
     tar -xvf 'SDL2-2.0.9.tar.gz'
     rm $'SDL2-2.0.9.tar.gz'
+    fi
 fi
 
 
