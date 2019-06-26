@@ -16,6 +16,7 @@ cd source/SDL2*
 mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
+make -j
 make install
 
 # glm
@@ -99,5 +100,50 @@ cmake .. \
     
 make install
 
+# MAKE MPFLUID
+
+# Make VRPN
+cd ../../vrpn
+cd source/vrpn
+mkdir build
+cd build 
+cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_FOLDER .. 
+make -j
+make install 
+
+# Make Synch
+cd ../../synch_fixed/synch
+mkdir build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
+    -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
+    -DVRPN_ROOT_DIR="$INSTALL_FOLDER/lib/vrpn"
+
+make install
+
+# # Make MPfluid
+cd ../../../mpfluid_vis_sari
+
+
+mkdir build
+cd build
+
+cmake ../src \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
+    -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
+    -DUSE_HDF5=OFF\
+    -DBUILD_HDF_CLIENT=OFF\
+    -Dsynch_DIR=$INSTALL_FOLDER/"cmake" \
+    -DUSE_SDL2=ON\
+    -DIMGUI_DIR="$SOURCE_FOLDER/imgui" \
+    -DBUILD_SW_CLIENT=OFF
+    #-D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
+
+    #-DWITH_IMGUI_EXAMPLE=ON\
+    #-DWITH_TRIANGLE_EXAMPLE=OFF
+# make 
+
+# make install
 
 
