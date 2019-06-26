@@ -1,0 +1,47 @@
+#!/bin/bash
+
+GLFW3=3.2
+GLM=0.9.7.0
+OPENMPI=openmpi-2.1.0
+VTK=VTK-8.2.0
+
+# With the order of dependency
+
+# glm
+cd source/glm*
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX="../../../install"
+make install
+
+# glwf
+cd ../../glfw-$GLFW3
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX="../../../install"
+make install
+
+# openmpi
+cd ../../$OPENMPI
+./configure --prefix="$PWD/install"
+make all install 
+
+# vtk
+cd ../vtk
+mkdir build
+cd build
+cmake .. -DCMAKE_INSTALL_PREFIX="../../../install"
+make install
+
+# corrade
+cd ../../corrade
+mkdir build
+cmake .. -DCMAKE_INSTALL_PREFIX="../../../install" -DCMAKE DOLDUR BURAYIIIIII
+
+# magnum
+
+# magnum integration
+
+
+
+
