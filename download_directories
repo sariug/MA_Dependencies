@@ -117,17 +117,14 @@ else
 fi
 
 ############### MP_FLUID ################
-# Synch
+# Synch & VRPN
 if [ -d "synch_fixed" ]; then
     echo -e "\e[34msynch_fixed exist"
 else
     git clone https://gitlab.lrz.de/sariug/synch_fixed.git
-fi
-# VRPN - taken from prepare home directory
-if [ -d "vrpn" ]; then
-    echo -e "\e[34mVRPN exist"
-else
-    git clone https://github.com/vrpn/vrpn.git
+    cd synch_fixed
+    git checkout 340f4d922158b52b4164a3f572ab54f75e0df718
+    cd ..
 fi
 
 draw_progress_bar 90
