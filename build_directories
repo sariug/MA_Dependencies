@@ -172,7 +172,7 @@ make
 draw_progress_bar 96
 make install
 # 
-echo "export LD_LIBRARY_PATH=:$INSTALL_FOLDER/lib:$LD_LIBRARY_PATH">> ~/.bashrc
+echo "export LD_LIBRARY_PATH=$INSTALL_FOLDER/lib:$LD_LIBRARY_PATH">> ~/.bashrc
 draw_progress_bar 99
 echo -e "\e[44mBuilding libraries finished\e[0m"
 destroy_scroll_area
