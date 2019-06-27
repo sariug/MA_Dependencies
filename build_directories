@@ -22,7 +22,7 @@ draw_progress_bar 0
     cd build
     cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
     draw_progress_bar 4
-    make -j3
+    make -j
     draw_progress_bar 8
     make install
     echo -e "\e[46mSDL2 IS FINISHED\e[0m"
@@ -56,17 +56,22 @@ echo -e "\e[46mGLFW IS FINISHED\e[0m"
 echo -e "\e[41mVTK IS BUILDING\e[0m"
 # vtk
 cd ../../$VTK
+if [ -d "build" ]; then
+cd ../corrade
+draw_progress_bar 45
+else
 mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
 draw_progress_bar 21
-make -j3
+make -j
 draw_progress_bar 35
 make install
 draw_progress_bar 45
 # corrade
 echo -e "\e[41mCorrade IS BUILDING\e[0m"
 cd ../../corrade
+fi
 mkdir build
 cd build
 cmake .. \
@@ -122,28 +127,17 @@ make install
 draw_progress_bar 70
 # MAKE MPFLUID
 
-# Make VRPN
-cd ../../vrpn
-mkdir build
-cd build 
-cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_FOLDER .. 
+# Make Synch and VRPN
+cd ../../synch_fixed
+SYNCH_DIR=$(pwd)
+./prepare_home_pc
 draw_progress_bar 73
-make -j
-make install 
 echo -e "\e[46mvrpn IS FINISHED\e[0m"
 draw_progress_bar 77
-
+cd $SYNCH_DIR
 echo -e "\e[41mSynch INTEGRATION IS BUILDING\e[0m"
 # Make Synch
-cd ../../synch_fixed/synch
-mkdir build
-cd build
-cmake .. \
-    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
-    -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
-    -DVRPN_ROOT_DIR="$INSTALL_FOLDER/lib/vrpn"
-
-make install
+./compile_synch_ubuntu
 echo -e "\e[46msynch IS FINISHED\e[0m"
 draw_progress_bar 83
 
@@ -158,7 +152,7 @@ cmake ../src \
     -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
     -DUSE_HDF5=OFF\
     -DBUILD_HDF_CLIENT=OFF\
-    -Dsynch_DIR=$INSTALL_FOLDER/"cmake" \
+    -Dsynch_DIR=$SYNCH_DIR/libs/synchInstalled/cmake \
     -DUSE_SDL2=OFF\
     -D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
     -DBUILD_SW_CLIENT=OFF\
