@@ -83,7 +83,7 @@ fi
 draw_progress_bar 61
 # Download imgui
 if [ -d "imgui" ]; then
-    echo -e "\e[34mimgui exist"
+    echo "\e[34mimgui exist"
 else
     git clone https://github.com/ocornut/imgui.git
     cd imgui
@@ -117,14 +117,17 @@ else
 fi
 
 ############### MP_FLUID ################
-# Synch & VRPN
+# Synch
 if [ -d "synch_fixed" ]; then
-    echo -e "\e[34msynch_fixed exist"
+    echo "\e[34msynch_fixed exist"
 else
     git clone https://gitlab.lrz.de/sariug/synch_fixed.git
-    cd synch_fixed
-    git checkout 340f4d922158b52b4164a3f572ab54f75e0df718
-    cd ..
+fi
+# VRPN - taken from prepare home directory
+if [ -d "vrpn" ]; then
+    echo -e "\e[34mVRPN exist"
+else
+    git clone https://github.com/vrpn/vrpn.git
 fi
 
 draw_progress_bar 90
