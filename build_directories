@@ -22,7 +22,7 @@ draw_progress_bar 0
     cd build
     cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
     draw_progress_bar 4
-    make -j
+    make -j4
     draw_progress_bar 8
     make install
     echo -e "\e[46mSDL2 IS FINISHED\e[0m"
@@ -64,7 +64,7 @@ mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
 draw_progress_bar 21
-make -j
+make -j4
 draw_progress_bar 35
 make install
 draw_progress_bar 45
