@@ -16,20 +16,21 @@ INSTALL_FOLDER="$PWD/install"
 DEPENDENCY_FOLDER="$PWD/dependencies"
 draw_progress_bar 0
 # With the order of dependency
-#if [ -d "$DEPENDENCY_FOLDER/SDL2*" ]; then
+if [ ! -d "dependencies/SDL2-2.0.9/build" ]; then
     cd dependencies/SDL2*
     mkdir build
     cd build
     cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
     draw_progress_bar 4
-    make -j4
+    make -j3
     draw_progress_bar 8
     make install
     echo -e "\e[46mSDL2 IS FINISHED\e[0m"
     cd ../../glm*
-   # else 
- #   cd dependencies/glm*
-#fi
+    else 
+    echo -e "\e[45mSDL2 was built.\e[0m"
+    cd dependencies/glm*
+fi
 draw_progress_bar 12
 echo -e "\e[41mGLM IS BUILDING\e[0m"
 # glm
@@ -53,25 +54,25 @@ draw_progress_bar 18
 # ./configure --prefix="$INSTALL_FOLDER"
 # make all install 
 echo -e "\e[46mGLFW IS FINISHED\e[0m"
+
+if [ ! -d "../../$VTK/build" ];then
 echo -e "\e[41mVTK IS BUILDING\e[0m"
 # vtk
-cd ../../$VTK
-if [ -d "build" ]; then
-cd ../corrade
-draw_progress_bar 45
-else
+cd ../../$VTK/build
 mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER"
 draw_progress_bar 21
-make -j4
+make -j3
 draw_progress_bar 35
 make install
+else
+    echo -e "\e[45mVTK was built.\e[0m"
+fi
 draw_progress_bar 45
 # corrade
 echo -e "\e[41mCorrade IS BUILDING\e[0m"
 cd ../../corrade
-fi
 mkdir build
 cd build
 cmake .. \
@@ -127,17 +128,28 @@ make install
 draw_progress_bar 70
 # MAKE MPFLUID
 
-# Make Synch and VRPN
-cd ../../synch_fixed
-SYNCH_DIR=$(pwd)
-./prepare_home_pc
+# Make VRPN
+cd ../../vrpn
+mkdir build
+cd build 
+cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_FOLDER .. 
 draw_progress_bar 73
+make -j
+make install 
 echo -e "\e[46mvrpn IS FINISHED\e[0m"
 draw_progress_bar 77
-cd $SYNCH_DIR
+
 echo -e "\e[41mSynch INTEGRATION IS BUILDING\e[0m"
 # Make Synch
-./compile_synch_ubuntu
+cd ../../synch_fixed/synch
+mkdir build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX="$INSTALL_FOLDER" \
+    -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
+    -DVRPN_ROOT_DIR="$INSTALL_FOLDER/lib/vrpn"
+
+make install
 echo -e "\e[46msynch IS FINISHED\e[0m"
 draw_progress_bar 83
 
@@ -152,7 +164,7 @@ cmake ../src \
     -DCMAKE_PREFIX_PATH="$INSTALL_FOLDER" \
     -DUSE_HDF5=OFF\
     -DBUILD_HDF_CLIENT=OFF\
-    -Dsynch_DIR=$SYNCH_DIR/libs/synchInstalled/cmake \
+    -Dsynch_DIR=$INSTALL_FOLDER/"cmake" \
     -DUSE_SDL2=OFF\
     -D_CORRADE_MODULE_DIR="$INSTALL_FOLDER/share/cmake/Corrade" \
     -DBUILD_SW_CLIENT=OFF\
@@ -166,7 +178,7 @@ make
 draw_progress_bar 96
 make install
 # 
-echo "export LD_LIBRARY_PATH=$INSTALL_FOLDER/lib:$LD_LIBRARY_PATH">> ~/.bashrc
+echo "export LD_LIBRARY_PATH=:$INSTALL_FOLDER/lib:$LD_LIBRARY_PATH">> ~/.bashrc
 draw_progress_bar 99
 echo -e "\e[44mBuilding libraries finished\e[0m"
 destroy_scroll_area
